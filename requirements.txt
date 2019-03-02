@@ -1,3 +1,4 @@
 # Bindings for the hermes protocol
 hermes-python>=0.2
 unit-converter
+-e git+https://github.com/bors-ltd/snips-common.git#egg=snips-common

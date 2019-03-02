@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-import traceback
-
 from hermes_python.hermes import Hermes
 from hermes_python.ontology import MqttOptions
 from unit_converter import converter
 
+import snips_common
+
 
 # Basically the inverse of what unit-converter is expecting
-
 PREFIXES = {
     "yocto": "y",
     "zepto": "z",
@@ -102,19 +101,6 @@ DEFAULT_UNITS = {
 }
 
 
-def subscribe_intent_callback(hermes, intent_message):
-    action_wrapper = ActionWrapper(hermes, intent_message)
-    try:
-        action_wrapper.action()
-    except UnknownUnit as exc:
-        action_wrapper.say("Désolée, je ne sais pas convertir les ", str(exc))
-    except ConversionError as exc:
-        action_wrapper.say("Désolée", str(exc))
-    except Exception:
-        traceback.print_exc()
-        action_wrapper.say("Désolée, il y a eu une erreur.")
-
-
 def parse_unit(full_unit):
     full_unit = full_unit.lower()
     base_unit = full_unit
@@ -145,16 +131,6 @@ def parse_unit(full_unit):
     return found_prefix, found_abbreviation
 
 
-def french_number(number):
-    number = float(number)
-    if int(number) == number:
-        number = int(number)
-    else:
-        # TODO keep signifcative zeros, e.g. 0.000001
-        number = round(number, 2)
-    return str(number).replace(".", " virgule ")
-
-
 class ConversionError(Exception):
     pass
 
@@ -163,7 +139,12 @@ class UnknownUnit(ConversionError):
     pass
 
 
-class ActionWrapper:
+class ActionWrapper(snips_common.ActionWrapper):
+    reactions = {
+        UnknownUnit: "Désolée, je ne sais pas convertir les {}",
+        ConversionError: "Désolée, {}",
+    }
+
     def __init__(self, hermes, intent_message):
         self.hermes = hermes
         self.intent_message = intent_message
@@ -178,7 +159,6 @@ class ActionWrapper:
 
         Refer to the documentation for further details.
         """
-        print('debut')
         slots = self.intent_message.slots
         quantity = slots.quantity.first().value
         source_unit = slots.source_unit.first().value
@@ -206,23 +186,20 @@ class ActionWrapper:
 
         print("converted", converted)
 
-        self.say(
-            french_number(quantity),
+        message = "{} {} est égal à {} {}.".format(
+            snips_common.french_number(quantity),
             source_unit,
             "est égal à",
-            french_number(converted),
+            snips_common.french_number(converted),
             dest_unit,
         )
+        extra = "Mais vous le saviez déjà." if source_unit == dest_unit else ""
 
-        print('fin')
-
-    def say(self, message, *args):
-        current_session_id = self.intent_message.session_id
-        message = message + " ".join(args)
-        self.hermes.publish_end_session(current_session_id, message)
+        self.end_session(message, extra)
 
 
 if __name__ == "__main__":
     mqtt_opts = MqttOptions()
-    with Hermes(mqtt_options=mqtt_opts) as h:
-        h.subscribe_intent("borsltd:askUnit", subscribe_intent_callback).start()
+
+    with Hermes(mqtt_options=mqtt_opts) as hermes:
+        hermes.subscribe_intent("borsltd:askUnit", ActionWrapper.callback).start()
