@@ -189,7 +189,6 @@ class ActionWrapper(snips_common.ActionWrapper):
         message = "{} {} est égal à {} {}.".format(
             snips_common.french_number(quantity),
             source_unit,
-            "est égal à",
             snips_common.french_number(converted),
             dest_unit,
         )
