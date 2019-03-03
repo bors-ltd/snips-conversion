@@ -139,26 +139,13 @@ class UnknownUnit(ConversionError):
     pass
 
 
-class ActionWrapper(snips_common.ActionWrapper):
+class ActionConversion(snips_common.ActionWrapper):
     reactions = {
         UnknownUnit: "Désolée, je ne sais pas convertir les {}",
         ConversionError: "Désolée, {}",
     }
 
-    def __init__(self, hermes, intent_message):
-        self.hermes = hermes
-        self.intent_message = intent_message
-
     def action(self):
-        """ Write the body of the function that will be executed once the intent is recognized.
-        In your scope, you have the following objects :
-        - intent_message : an object that represents the recognized intent
-        - hermes : an object with methods to communicate with the MQTT bus following the hermes protocol.
-        - conf : a dictionary that holds the skills parameters you defined.
-        To access global parameters use conf['global']['parameterName']. For end-user parameters use conf['secret']['parameterName']
-
-        Refer to the documentation for further details.
-        """
         slots = self.intent_message.slots
         quantity = slots.quantity.first().value
         source_unit = slots.source_unit.first().value
@@ -201,4 +188,4 @@ if __name__ == "__main__":
     mqtt_opts = MqttOptions()
 
     with Hermes(mqtt_options=mqtt_opts) as hermes:
-        hermes.subscribe_intent("borsltd:askUnit", ActionWrapper.callback).start()
+        hermes.subscribe_intent("borsltd:askUnit", ActionConversion.callback).start()
