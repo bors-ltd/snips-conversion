@@ -34,11 +34,10 @@ class ActionConversion(snips_common.ActionWrapper):
         print("converted", converted)
 
         # Quick fix how the number will be said
-        magnitude, converted = converted.split(' ', 1)
+        magnitude, converted = converted.split(" ", 1)
         magnitude = snips_common.french_number(magnitude)
-        if converted.startswith('{0}'):
-            # Bypass Babel or Pint bug
-            converted = converted[3:]
+        # Work around Babel or Pint bug
+        converted = converted.replace("{0}", "")
         # Quick fix how the unit will be said
         converted = converted.replace("²", " carré")
         converted = converted.replace("³", " cube")
