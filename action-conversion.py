@@ -40,7 +40,8 @@ class ActionConversion(snips_common.ActionWrapper):
             # Bypass Babel or Pint bug
             converted = converted[3:]
         # Quick fix how the unit will be said
-        converted = converted.replace('³', " cube")
+        converted = converted.replace("²", " carré")
+        converted = converted.replace("³", " cube")
         converted = magnitude + converted
 
         message = "{} {} est égal à {}".format(
