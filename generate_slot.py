@@ -6,7 +6,8 @@ from registry import PREFIXES, UNITS
 # Maybe, maybe not...
 UNITS_WITH_PREFIXES = (
     "mètre", "seconde", "ampère", "gramme", "coulomb", "volt", "ohm", "tesla",
-    "gauss", "joule", "newton", "watt", "watts", "bar", "litre", "litres", "mètre cube",
+    "gauss", "joule", "newton", "octet", "octets", "watt", "watts", "bar",
+    "litre", "litres", "mètre cube",
 )
 
 
