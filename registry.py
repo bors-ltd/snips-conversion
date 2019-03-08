@@ -3,189 +3,141 @@ import pint.errors
 
 from exceptions import UnknownUnit
 
-# Translate French prefix to abbreviation
-PREFIXES = {
-    # decimal prefixes
-    "yocto": "y",
-    "zepto": "z",
-    "atto": "a",
-    "femto": "f",
-    "pico": "p",
-    "nano": "n",
-    "micro": "µ",
-    "milli": "m",
-    "centi": "c",
-    "déci": "d",
-    "déca": "da",
-    "hecto": "h",
-    "kilo": "k",
-    "méga": "M",
-    "giga": "G",
-    "téra": "T",
-    "péta": "P",
-    "exa": "E",
-    "zetta": "Z",
-    "yotta": "Y",
-    # binary prefixes
-    "kibi": "Ki",
-    "mebi": "Mi",
-    "gibi": "Gi",
-    "tebi": "Ti",
-    "pebi": "Pi",
-    "exbi": "Ei",
-    "zebi": "Zi",
-    "yobi": "Yi",
+
+# Translate prefixes to French
+PREFIXES = {  # decimal prefixes
+    'y': 'yocto',
+    'z': 'zepto',
+    'a': 'atto',
+    'f': 'femto',
+    'p': 'pico',
+    'n': 'nano',
+    'µ': 'micro',
+    'm': 'milli',
+    'c': 'centi',
+    'd': 'déci',
+    'da': 'déca',
+    'h': 'hecto',
+    'k': 'kilo',
+    'M': 'méga',
+    'G': 'giga',
+    'T': 'téra',
+    'P': 'péta',
+    'E': 'exa',
+    'Z': 'zetta',
+    'Y': 'yotta',
 }
 
-# Translate French units to abbreviation (I can't cover them all!)
+BINARY_PREFIXES = {
+    'Ki': 'kibi',
+    'Mi': 'mebi',
+    'Gi': 'gibi',
+    'Ti': 'tebi',
+    'Pi': 'pebi',
+    'Ei': 'exbi',
+    'Zi': 'zebi',
+    'Yi': 'yobi',
+}
+
+# Translate units to French (I can't cover them all!)
 UNITS = {
     # reference
-    "mètre": "m",
-    "seconde": "s",
-    "ampère": "A",
-    "candela": "cd",
-    "gramme": "g",
-    "mole": "mol",
-    "kelvin": "K",
-    "radian": "rad",
-    "bit": "bit",
+    'm': ('mètre', 'mètres'),
+    's': ('seconde', 'secondes'),
+    'A': ('ampère', 'ampères'),
+    'cd': ('candela', 'candelas'),
+    'g': ('gramme', 'grammes'),
+    'mol': ('mole', 'moles'),
+    'K': ('kelvin', 'kelvins'),
+    'rad': ('radian', 'radians'),
+    'bit': ('bit', 'bits'),
     # Angle
-    "tour": "turn",
-    "degré angulaire": "degree",
-    "minute_angulaire": "arcminute",
-    "seconde angulaire": "arcsecond",
-    "stéradian": "sr",
+    'turn': ('tour', 'tours'),
+    'degree': ('degré angulaire', "degré d'angle"),
+    'arcminute': ('minute angulaire', "minute d'angle"),
+    'arcsecond': ('seconde angulaire', "seconde d'angle"),
+    'sr': ('stéradian', 'stéradians'),
     # Area
-    "are": "are",
-    "hectare": "ha",
+    'are': ('are', 'ares'),
+    'ha': ('hectare', 'hectares'),
     # EM
-    "coulomb": "C",
-    "volt": "V",
-    "ohm": "Ω",
-    "tesla": "T",
-    "gauss": "gauss",
+    'C': ('coulomb', 'coulombs'),
+    'V': ('volt', 'volts'),
+    'Ω': ('ohm', 'ohms'),
+    'T': ('tesla', 'teslas'),
+    'gauss': ('gauss',),
     # Energy
-    "joule": "J",
-    "watt heure": "Wh",
+    'J': ('joule', 'joules'),
+    'Wh': ('watt heure', 'watts heure'),
     # Force
-    "newton": "N",
-    "hertz": "Hz",
-    "tour par minute": "rpm",
-    "tours par minute": "rpm",
+    'N': ('newton', 'newtons'),
+    'Hz': ('hertz',),
+    'rpm': ('tour par minute', 'tours par minute'),
     # Information
-    "octet": "B",
-    "octets": "B",
-    "baud": "Bd",
-    "bauds": "Bd",
+    'B': ('octet', 'octets'),
+    'Bd': ('baud', 'bauds'),
     # Length
-    "angstrom": "Å",
-    "parsec": "pc",
-    "année lumière": "ly",
-    "année-lumière": "ly",
-    "unité astronomique": "au",
-    "unités astronomique": "au",
+    'Å': ('ångström', 'ångströms', 'angström', 'angströms', 'angstrœm', 'angstrœms'),
+    'pc': ('parsec', 'parsecs'),
+    'ly': ('année-lumière', 'années-lumière', 'année lumière', 'années lumière'),
+    'au': ('unité astronomique', 'unités astronomique'),
     # Mass
-    "carat": "carat",
-    "carats": "carat",
+    'carat': ('carat', 'carats'),
     # Photometry
-    "lumen": "lm",
-    "lux": "lx",
+    'lm': ('lumen', 'lumens'),
+    'lx': ('lux',),
     # Power
-    "watt": "W",
-    "watts": "W",
-    "cheval vapeur": "metric_horsepower",
-    "chevaux vapeur": "metric_horsepower",
+    'W': ('watt', 'watts'),
+    'metric_horsepower': ('cheval vapeur', 'chevaux vapeur'),
     # Pressure
-    "mercure": "Hg",
-    "pascal": "Pa",
-    "bar": "bar",
-    "atmosphère": "atm",
+    'Hg': ('mercure', 'mercures'),
+    'Pa': ('pascal', 'pascals'),
+    'bar': ('bar', 'bars'),
+    'atm': ('atmosphère', 'atmosphères'),
     # Temperature
-    "celsius": "celsius",
-    "degré": "celsius",
-    "degrés": "celsius",
-    "degré celsius": "celsius",
-    "degrés celsius": "celsius",
-    "fahrenheit": "fahrenheit",
-    "degré fahrenheit": "fahrenheit",
-    "degrés fahrenheit": "fahrenheit",
+    'degC': ('celsius', 'degré celsius', 'degrés celsius'),
+    'degF': ('fahrenheit', 'degré fahrenheit', 'degrés fahrenheit'),
     # Time
-    "mn": "minute",  # XXX Snips abbreviating
-    "minute": "minute",
-    "minutes": "minute",
-    "heure": "hour",
-    "heures": "hour",
-    "jour": "day",
-    "jours": "day",
-    "semaine": "week",
-    "semaines": "week",
-    "année": "year",
-    "années": "year",
-    "mois": "month",
-    "jour sidéral": "sidereal_day",
-    "jours sidéraux": "sidereal_day",
-    "heure sidérale": "sidereal_hour",
-    "heures sidérales": "sidereal_hour",
-    "minute sidérale": "sidereal_minute",
-    "minutes sidérales": "sidereal_minute",
-    "seconde sidérale": "sidereal_second",
-    "secondes sidérales": "sidereal_second",
-    "année sidérale": "sidereal_year",
-    "années sidérales": "sidereal_year",
-    "mois sidéral": "sidereal_month",
-    "mois sidéraux": "sidereal_month",
-    "année bissextile": "leap_year",
-    "années bissextiles": "leap_year",
-    "année julienne": "julian_year",
-    "années juliennes": "julian_year",
-    "année grégorienne": "gregorian_year",
-    "années grégoriennes": "gregorian_year",
-    "millénaire": "millenium",
+    'min': ('minute', 'minutes', 'mn'),
+    'hr': ('heure', 'heures'),
+    'day': ('jour', 'jours'),
+    'week': ('semaine', 'semaines'),
+    'year': ('année', 'années'),
+    'month': ('mois',),
+    'sidereal_day': ('jour sidéral', 'jours sidéraux'),
+    'sidereal_hour': ('heure sidérale', 'heures sidérales'),
+    'sidereal_minute': ('minute sidérale', 'minutes sidérales'),
+    'sidereal_second': ('seconde sidérale', 'secondes sidérales'),
+    'sidereal_year': ('année sidérale', 'années sidérales'),
+    'sidereal_month': ('mois sidéral', 'mois sidéraux'),
+    'leap_year': ('année bissextile', 'années bissextiles'),
+    'julian_year': ('année julienne', 'années juliennes'),
+    'gregorian_year': ('année grégorienne', 'années grégoriennes'),
+    'millenium': ('millénaire', 'millénaires'),
     # Velocity
-    "mile nautique": "nmi",
-    "miles nautiques": "nmi",
-    "mille nautique": "nmi",  # XXX
-    "milles nautiques": "nmi",  # XXX
-    "mile marin": "nmi",
-    "miles marins": "nmi",
-    "mille nautique": "nmi",  # XXX
-    "milles nautiques": "nmi",  # XXX
-    "noeud": "knot",
-    "noeuds": "knot",
-    "mile par heure": "mile / hour",
-    "miles par heure": "mile / hour",
-    "mètre par heure": "meter / hour",
-    "mètres par heure": "meter / hour",
-    "mètre heure": "meter / hour",
-    "mètres heure": "meter / hour",
-    "mètre par minute": "meter / minute",
-    "mètres par minute": "meter / minute",
-    "mètre par seconde": "meter / second",
-    "mètres par seconde": "meter / second",
+    'nmi': ('mille marin', 'milles marins', 'mille nautique', 'milles nautiques'),
+    'knot': ('nœud', 'nœuds', 'noeud' 'noeuds'),
+    'mile / hour': ('miles par heure', "miles à l'heure"),
+    'meter / hour': ('mètre par heure', 'mètres par heure', 'mètre heure', 'mètres heure'),
+    'meter / minute': ('mètre par minute', 'mètres par minute'),
+    'meter / second': ('mètre par seconde', 'mètres par seconde'),
     # Volume
-    "litre": "l",
-    "litres": "l",
-    "mètre cube": "meter ** 3",
-    "stère": "stere",
+    'l': ('litre', 'litres'),
+    'meter ** 3': ('mètre cube', 'mètres cube'),
+    'stere': ('stère', 'stères'),
     # USCSLengthInternational
-    "pouce": "inch",
-    "pouces": "inch",
-    "pied": "foot",
-    "pieds": "foot",
-    "yard": "yard",
-    "yards": "yard",
-    "mile": "mile",
-    "miles": "mile",
+    'inch': ('pouce', 'pouces'),
+    'foot': ('pied', 'pieds'),
+    'yard': ('yard', 'yards'),
+    'mile': ('mile', 'miles'),
     # USCSLiquidVolume
-    "pinte": "US_pint",
-    "gallon": "US_liquid_gallon",
+    'US_pint': ('pinte', 'pintes'),
+    'US_liquid_gallon': ('gallon', 'gallons'),
     # Avoirdupois
-    "once": "ounce",
-    "onces": "ounce",
-    "livre": "pound",
-    "livres": "pound",
-    # Constants
-    "vitesse de la lumière": "c",  # Cheat by saying "une vitesse de la lumière"
+    'ounce': ('once', 'onces'),
+    'pound': ('livre', 'livres'),
+    # Constants TODO
+    'c': ('vitesse de la lumière', 'la vitesse de la lumière'),
 }
 
 
@@ -207,26 +159,26 @@ def to_quantity(french_unit):
     base_unit = french_unit
 
     found_prefix = ""
-    for prefix, abbreviation in PREFIXES.items():
-        if french_unit.startswith(prefix):
-            found_prefix = abbreviation
-            base_unit = french_unit[len(prefix) :]
+    for prefix, plain in PREFIXES.items() + BINARY_PREFIXES.items():
+        if french_unit.startswith(plain):
+            found_prefix = prefix
+            base_unit = french_unit[len(plain):]
             break
     else:
         print("No prefix")
 
     print("found_prefix", found_prefix, "base_unit", base_unit)
 
-    found_abbreviation = None
-    for unit, abbreviation in UNITS.items():
-        if base_unit == unit or base_unit[:-1] == unit:  # Remove plural
-            found_abbreviation = abbreviation
+    found_unit = None
+    for unit, synonyms in UNITS.items():
+        if base_unit in synonyms:
+            found_unit = unit
             break
     else:
         raise UnknownUnit(base_unit)
 
-    print("found_abbreviation", found_abbreviation)
+    print("found_unit", found_unit)
 
-    print(french_unit, "reads as", found_prefix + found_abbreviation)
+    print(french_unit, "reads as", found_prefix + found_unit)
 
-    return ureg(found_prefix + found_abbreviation)
+    return ureg(found_prefix + found_unit)

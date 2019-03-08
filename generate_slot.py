@@ -1,23 +1,29 @@
 """
 Generate what Snips is to be expecting directly from the list of supported units.
 """
-from registry import PREFIXES, UNITS
+import itertools
 
-# Maybe, maybe not...
+from registry import PREFIXES, BINARY_PREFIXES, UNITS
+
+# Maybe, maybe not, maybe more...
 UNITS_WITH_PREFIXES = (
-    "mètre", "seconde", "ampère", "gramme", "coulomb", "volt", "ohm", "tesla",
-    "gauss", "joule", "newton", "octet", "octets", "watt", "watts", "bar",
-    "litre", "litres", "mètre cube",
+    "m", "s", "A", "g", "C", "V", "Ω", "T", "gauss", "J", "N", "Hz", "B", "bit",
+    "W", "bar", "pc", "W", "Pa", "bar", "meter / hour", "meter / minute",
+    "meter / second", "l", "meter ** 3",
 )
 
 
 def generate_slot(fp):
-    for unit in sorted(UNITS):
+    # Sort the dicts for consistent output, remove with Python 3.6+
+    for unit, synonyms in sorted(UNITS.items()):
         if unit in UNITS_WITH_PREFIXES:
-            for prefix in PREFIXES:
-                fp.write(prefix + unit + "\n")
+            prefixes = PREFIXES.values()
+            if unit in ('B', 'bit'):
+                prefixes = itertools.chain(prefixes, BINARY_PREFIXES.values())
+            for prefix in sorted(prefixes):
+                fp.write(",".join(prefix + synonym for synonym in synonyms) + "\n")
         else:
-            fp.write(unit + "\n")
+            fp.write(",".join(synonyms) + "\n")
 
 
 if __name__ == '__main__':
