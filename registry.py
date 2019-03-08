@@ -1,3 +1,5 @@
+import itertools
+
 import pint
 import pint.errors
 
@@ -95,7 +97,7 @@ UNITS = {
     'bar': ('bar', 'bars'),
     'atm': ('atmosphère', 'atmosphères'),
     # Temperature
-    'degC': ('celsius', 'degré celsius', 'degrés celsius'),
+    'degC': ('celsius', 'degré', 'degrés', 'degré celsius', 'degrés celsius'),
     'degF': ('fahrenheit', 'degré fahrenheit', 'degrés fahrenheit'),
     # Time
     'min': ('minute', 'minutes', 'mn'),
@@ -159,7 +161,7 @@ def to_quantity(french_unit):
     base_unit = french_unit
 
     found_prefix = ""
-    for prefix, plain in PREFIXES.items() + BINARY_PREFIXES.items():
+    for prefix, plain in itertools.chain(PREFIXES.items(), BINARY_PREFIXES.items()):
         if french_unit.startswith(plain):
             found_prefix = prefix
             base_unit = french_unit[len(plain):]
