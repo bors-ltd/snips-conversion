@@ -193,7 +193,11 @@ ureg = pint.UnitRegistry()
 
 
 def to_quantity(french_unit):
-    """Translate a French unit into a Pint Quantity."""
+    """
+    Translate a French unit into a Pint Quantity.
+
+    Magnitude defaults to 1 (or whatever the definition says).
+    """
     # Sometimes Snips would already give the abbreviation
     try:
         return ureg(french_unit)
@@ -206,7 +210,7 @@ def to_quantity(french_unit):
     for prefix, abbreviation in PREFIXES.items():
         if french_unit.startswith(prefix):
             found_prefix = abbreviation
-            base_unit = french_unit[len(prefix):]
+            base_unit = french_unit[len(prefix) :]
             break
     else:
         print("No prefix")

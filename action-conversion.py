@@ -24,11 +24,14 @@ class ActionConversion(snips_common.ActionWrapper):
         source_quantity = registry.to_quantity(source_unit)
         dest_quantity = registry.to_quantity(dest_unit) if dest_unit else None
 
-        source_quantity = quantity * source_quantity
+        # Must be called this way for the temperature (absolute versus relative unit)
+        source_quantity = registry.ureg.Quantity(quantity, source_quantity)
         if dest_quantity:
             dest_quantity = source_quantity.to(dest_quantity)
         else:
-            dest_quantity = source_quantity.to_base_units().to_reduced_units()
+            dest_quantity = (
+                source_quantity.to_base_units().to_reduced_units().to_compact()
+            )
 
         converted = dest_quantity.format_babel(locale='fr_FR')
         print("converted", converted)
@@ -44,9 +47,7 @@ class ActionConversion(snips_common.ActionWrapper):
         converted = magnitude + converted
 
         message = "{} {} est égal à {}".format(
-            snips_common.french_number(quantity),
-            source_unit,
-            converted,
+            snips_common.french_number(quantity), source_unit, converted
         )
         self.end_session(message)
 
