@@ -138,7 +138,11 @@ UNITS = {
     'nmi': ('mille marin', 'milles marins', 'mille nautique', 'milles nautiques'),
     'knot': ('nœud', 'nœuds', 'noeud' 'noeuds'),
     'mile / hour': ('miles par heure', "miles à l'heure"),
-    'meter / hour': ('mètre par heure', 'mètres par heure', 'mètre heure', 'mètres heure'),
+    'meter / hour': (
+        'mètre par heure', 'mètres par heure',
+        "mètre à l'heure", "mètres à l'heure",
+        'mètre heure', 'mètres heure',
+    ),
     'meter / minute': ('mètre par minute', 'mètres par minute'),
     'meter / second': ('mètre par seconde', 'mètres par seconde'),
 

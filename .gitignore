@@ -105,4 +105,5 @@ venv_code/
 .mypy_cache/
 
 .vscode/
-slot*.txt
+slot-*.txt
+intent-*.txt
