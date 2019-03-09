@@ -2,6 +2,7 @@
 from hermes_python.hermes import Hermes
 from hermes_python.ontology import MqttOptions
 
+import pint.errors
 import snips_common
 
 import exceptions
@@ -27,7 +28,10 @@ class ActionConversion(snips_common.ActionWrapper):
         # Must be called this way for the temperature (absolute versus relative unit)
         source_quantity = registry.ureg.Quantity(quantity, source_quantity)
         if dest_quantity:
-            dest_quantity = source_quantity.to(dest_quantity)
+            try:
+                dest_quantity = source_quantity.to(dest_quantity)
+            except pint.errors.DimensionalityError:
+                raise exceptions.UnknownUnit("{} en {}".format(source_unit, dest_unit))
         else:
             dest_quantity = (
                 source_quantity.to_base_units().to_reduced_units().to_compact()
