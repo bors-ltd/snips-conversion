@@ -16,14 +16,13 @@ UNITS_WITH_PREFIXES = (
 def generate_slot(fp):
     # Sort the dicts for consistent output, remove with Python 3.6+
     for unit, synonyms in sorted(UNITS.items()):
+        fp.write(",".join(synonyms) + "\n")
         if unit in UNITS_WITH_PREFIXES:
             prefixes = PREFIXES.values()
             if unit in ('B', 'bit'):
                 prefixes = itertools.chain(prefixes, BINARY_PREFIXES.values())
             for prefix in sorted(prefixes):
                 fp.write(",".join(prefix + synonym for synonym in synonyms) + "\n")
-        else:
-            fp.write(",".join(synonyms) + "\n")
 
 
 if __name__ == '__main__':

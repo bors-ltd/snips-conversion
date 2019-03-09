@@ -81,7 +81,7 @@ UNITS = {
     # Length
     'Å': ('ångström', 'ångströms', 'angström', 'angströms', 'angstrœm', 'angstrœms'),
     'pc': ('parsec', 'parsecs'),
-    'ly': ('année-lumière', 'années-lumière', 'année lumière', 'années lumière'),
+    'ly': ('année-lumière', 'années-lumière', 'année lumière', 'années lumière', 'al'),
     'au': ('unité astronomique', 'unités astronomique'),
     # Mass
     'carat': ('carat', 'carats'),
