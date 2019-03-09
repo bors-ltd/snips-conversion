@@ -7,9 +7,9 @@ from registry import PREFIXES, BINARY_PREFIXES, UNITS
 
 # Maybe, maybe not, maybe more...
 UNITS_WITH_PREFIXES = (
-    "m", "s", "A", "g", "C", "V", "Ω", "T", "gauss", "J", "N", "Hz", "B", "bit",
-    "W", "bar", "pc", "W", "Pa", "bar", "meter / hour", "meter / minute",
-    "meter / second", "l", "meter ** 3",
+    "m", "s", "A", "g", "C", "V", "Ω", "T", "gauss", "J", "Wh", "eV", "cal",
+    "N", "Hz", "B", "bit", "W", "bar", "pc", "W", "Pa", "bar", "meter / hour",
+    "meter / minute", "meter / second", "l", "meter ** 3",
 )
 
 

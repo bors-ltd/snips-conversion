@@ -53,52 +53,69 @@ UNITS = {
     'K': ('kelvin', 'kelvins'),
     'rad': ('radian', 'radians'),
     'bit': ('bit', 'bits'),
+
     # Angle
-    'turn': ('tour', 'tours'),
-    'degree': ('degré angulaire', "degré d'angle"),
-    'arcminute': ('minute angulaire', "minute d'angle"),
-    'arcsecond': ('seconde angulaire', "seconde d'angle"),
+    'turn': ('tour', 'tours', 'révolution', 'cycle', 'cercle'),
+    'arcdeg': ('degré angulaire', "degré d'arc"),
+    'arcmin': ('minute angulaire', "minute d'arc"),
+    'arcsec': ('seconde angulaire', "seconde d'arc"),
     'sr': ('stéradian', 'stéradians'),
+
     # Area
     'are': ('are', 'ares'),
     'ha': ('hectare', 'hectares'),
+    'm**2': ('mètre carré', 'mètres carré'),
+
     # EM
     'C': ('coulomb', 'coulombs'),
     'V': ('volt', 'volts'),
     'Ω': ('ohm', 'ohms'),
     'T': ('tesla', 'teslas'),
     'gauss': ('gauss',),
+
     # Energy
     'J': ('joule', 'joules'),
     'Wh': ('watt heure', 'watts heure'),
+    'eV': ('électron volt', 'électrons volt'),
+    'cal': ('calorie', 'calories'),
+
     # Force
     'N': ('newton', 'newtons'),
+
+    # Frequency
     'Hz': ('hertz',),
-    'rpm': ('tour par minute', 'tours par minute'),
+    'rpm': ('tour par minute', 'tours par minute', 'révolution par minute', 'révolutions par minute'),
+
     # Information
     'B': ('octet', 'octets'),
     'Bd': ('baud', 'bauds'),
+
     # Length
     'Å': ('ångström', 'ångströms', 'angström', 'angströms', 'angstrœm', 'angstrœms'),
     'pc': ('parsec', 'parsecs'),
     'ly': ('année-lumière', 'années-lumière', 'année lumière', 'années lumière', 'al'),
     'au': ('unité astronomique', 'unités astronomique'),
+
     # Mass
     'carat': ('carat', 'carats'),
+
     # Photometry
     'lm': ('lumen', 'lumens'),
     'lx': ('lux',),
+
     # Power
     'W': ('watt', 'watts'),
     'metric_horsepower': ('cheval vapeur', 'chevaux vapeur'),
+
     # Pressure
-    'Hg': ('mercure', 'mercures'),
     'Pa': ('pascal', 'pascals'),
     'bar': ('bar', 'bars'),
     'atm': ('atmosphère', 'atmosphères'),
+
     # Temperature
     'degC': ('celsius', 'degré', 'degrés', 'degré celsius', 'degrés celsius'),
     'degF': ('fahrenheit', 'degré fahrenheit', 'degrés fahrenheit'),
+
     # Time
     'min': ('minute', 'minutes', 'mn'),
     'hr': ('heure', 'heures'),
@@ -116,6 +133,7 @@ UNITS = {
     'julian_year': ('année julienne', 'années juliennes'),
     'gregorian_year': ('année grégorienne', 'années grégoriennes'),
     'millenium': ('millénaire', 'millénaires'),
+
     # Velocity
     'nmi': ('mille marin', 'milles marins', 'mille nautique', 'milles nautiques'),
     'knot': ('nœud', 'nœuds', 'noeud' 'noeuds'),
@@ -123,21 +141,26 @@ UNITS = {
     'meter / hour': ('mètre par heure', 'mètres par heure', 'mètre heure', 'mètres heure'),
     'meter / minute': ('mètre par minute', 'mètres par minute'),
     'meter / second': ('mètre par seconde', 'mètres par seconde'),
+
     # Volume
     'l': ('litre', 'litres'),
-    'meter ** 3': ('mètre cube', 'mètres cube'),
+    'm**3': ('mètre cube', 'mètres cube'),
     'stere': ('stère', 'stères'),
+
     # USCSLengthInternational
     'inch': ('pouce', 'pouces'),
     'foot': ('pied', 'pieds'),
     'yard': ('yard', 'yards'),
     'mile': ('mile', 'miles'),
+
     # USCSLiquidVolume
     'US_pint': ('pinte', 'pintes'),
     'US_liquid_gallon': ('gallon', 'gallons'),
+
     # Avoirdupois
     'ounce': ('once', 'onces'),
     'pound': ('livre', 'livres'),
+
     # Constants TODO
     'c': ('vitesse de la lumière', 'la vitesse de la lumière'),
 }
