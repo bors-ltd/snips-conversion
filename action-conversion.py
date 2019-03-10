@@ -20,7 +20,11 @@ class ActionConversion(snips_common.ActionWrapper):
         quantity = slots.quantity.first().value
         source_unit = slots.source_unit.first().value
         dest_unit = slots.dest_unit.first().value if len(slots.dest_unit) else None
-        print('quantity', quantity, 'source_unit', source_unit, 'dest_unit', dest_unit)
+        print(
+            'quantity', quantity,
+            'source_unit', source_unit,
+            'dest_unit', dest_unit
+        )
 
         source_quantity = registry.to_quantity(source_unit)
         dest_quantity = registry.to_quantity(dest_unit) if dest_unit else None
@@ -31,7 +35,9 @@ class ActionConversion(snips_common.ActionWrapper):
             try:
                 dest_quantity = source_quantity.to(dest_quantity)
             except pint.errors.DimensionalityError:
-                raise exceptions.UnknownUnit("{} en {}".format(source_unit, dest_unit))
+                raise exceptions.UnknownUnit(
+                    "{} en {}".format(source_unit, dest_unit)
+                )
         else:
             dest_quantity = (
                 source_quantity.to_base_units().to_reduced_units().to_compact()
@@ -43,7 +49,7 @@ class ActionConversion(snips_common.ActionWrapper):
         # Quick fix how the number will be said
         magnitude, converted = converted.split(" ", 1)
         magnitude = snips_common.french_number(magnitude)
-        # Work around Babel or Pint bug
+        # Work around Pint bug: https://github.com/hgrecco/pint/pull/773
         converted = converted.replace("{0}", "")
         # Quick fix how the unit will be said
         converted = converted.replace("²", " carré")
@@ -60,4 +66,6 @@ if __name__ == "__main__":
     mqtt_opts = MqttOptions()
 
     with Hermes(mqtt_options=mqtt_opts) as hermes:
-        hermes.subscribe_intent("borsltd:askUnit", ActionConversion.callback).start()
+        hermes.subscribe_intent(
+            "borsltd:askUnit", ActionConversion.callback
+        ).start()
