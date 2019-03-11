@@ -169,8 +169,13 @@ UNITS = {
     'c': ('vitesse de la lumière', 'la vitesse de la lumière'),
 }
 
-
 ureg = pint.UnitRegistry()
+
+DEFAULT_UNITS = {
+    # What general public is expecting when asking a temperature
+    ureg.degK: ureg.degC,
+    ureg.degF: ureg.degC,
+}
 
 
 def to_quantity(french_unit):
