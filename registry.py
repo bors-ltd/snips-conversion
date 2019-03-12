@@ -136,7 +136,7 @@ UNITS = {
     'millenium': ('millénaire', 'millénaires'),
 
     # Velocity
-    'nmi': ('mille marin', 'milles marins', 'mille nautique', 'milles nautiques'),
+    'nmi': ('mille marin', 'milles marins', 'mille marins', 'mille nautique', 'milles nautiques', 'mille nautiques'),
     'knot': ('nœud', 'nœuds', 'noeud' 'noeuds'),
     'mile / hour': ('miles par heure', "miles à l'heure"),
     'meter / hour': (
