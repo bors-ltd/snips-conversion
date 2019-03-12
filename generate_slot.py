@@ -26,5 +26,5 @@ def generate_slot(fp):
 
 
 if __name__ == '__main__':
-    with open("slot-unit.txt", 'w') as fp:
+    with open("slot-unit_fr.txt", 'w') as fp:
         generate_slot(fp)
